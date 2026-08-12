@@ -1,0 +1,63 @@
+title: Arpeio ADBC Drivers
+description: >-
+  Pure-native, high-performance ADBC drivers for SQL Server, PostgreSQL and
+  Oracle — return Apache Arrow directly, install by name.
+remote_theme: just-the-docs/just-the-docs@v0.10.1
+
+# Site URL — GitHub Pages for arpe-io/arpeio-adbc-drivers-docs (served from the repo root).
+url: https://arpe-io.github.io
+baseurl: /arpeio-adbc-drivers-docs
+
+# ---- Just the Docs settings -------------------------------------------------
+search_enabled: true
+search:
+  heading_level: 3
+  previews: 3
+  rel_url: true
+
+# Light by default; a toggle (see _includes/header_custom.html) flips to dark.
+color_scheme: light
+
+heading_anchors: true
+back_to_top: true
+back_to_top_text: "Back to top"
+
+aux_links:
+  "GitHub ↗":
+    - "https://github.com/arpe-io/adbc-drivers"
+  "arpe.io ↗":
+    - "https://www.arpe.io"
+aux_links_new_tab: true
+
+footer_content: >-
+  Prototype documentation for the Arpeio ADBC driver family.
+  Installers &amp; docs are MIT-licensed; the driver binaries are proprietary and
+  licence-gated at runtime — contact <a href="mailto:sales@arpe.io">sales@arpe.io</a>.
+
+# Callouts (used across the docs for Note / Since / Warning boxes)
+callouts:
+  note:
+    title: Note
+    color: blue
+  since:
+    title: Version
+    color: green
+  warning:
+    title: Heads up
+    color: yellow
+  cloud:
+    title: Cloud
+    color: purple
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+
+# Don't publish these into the built site.
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - README.md
+  - DOCS_GAPS.md
+  - _config_local.yml

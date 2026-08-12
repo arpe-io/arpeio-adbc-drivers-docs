@@ -1,0 +1,41 @@
+<!-- Dark / light theme toggle. Just the Docs ships both schemes; we persist the
+     choice in localStorage and add a small button to the top aux nav. -->
+<script>
+  (function () {
+    var KEY = "arpeio-theme";
+    function apply(theme) {
+      if (window.jtd && typeof window.jtd.setTheme === "function") {
+        window.jtd.setTheme(theme);
+      }
+    }
+    function saved() {
+      try { return localStorage.getItem(KEY); } catch (e) { return null; }
+    }
+    function store(theme) {
+      try { localStorage.setItem(KEY, theme); } catch (e) {}
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+      var theme = saved() || "light";
+      apply(theme);
+
+      var host = document.querySelector(".aux-nav-list") || document.querySelector(".site-header");
+      if (!host) return;
+      var li = document.createElement("li");
+      li.className = "aux-nav-list-item";
+      var btn = document.createElement("button");
+      btn.className = "theme-toggle";
+      btn.type = "button";
+      btn.setAttribute("aria-label", "Toggle dark mode");
+      function label() { btn.textContent = (saved() === "dark") ? "☀︎ Light" : "☾ Dark"; }
+      label();
+      btn.addEventListener("click", function () {
+        theme = (saved() === "dark") ? "light" : "dark";
+        store(theme);
+        apply(theme);
+        label();
+      });
+      li.appendChild(btn);
+      host.appendChild(li);
+    });
+  })();
+</script>

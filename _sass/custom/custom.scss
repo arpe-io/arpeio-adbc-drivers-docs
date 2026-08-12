@@ -1,0 +1,112 @@
+// ---------------------------------------------------------------------------
+// Arpeio ADBC drivers — landing hero, driver cards, version badges.
+// Kept small and theme-token-based so light/dark both work.
+// ---------------------------------------------------------------------------
+
+.hero {
+  margin: 0 0 2rem;
+  padding: 2rem 1.75rem;
+  border-radius: 12px;
+  border: 1px solid $border-color;
+  background: linear-gradient(135deg, rgba(90, 103, 216, 0.10), rgba(56, 178, 172, 0.10));
+
+  .hero-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: $link-color;
+    margin: 0 0 0.4rem;
+  }
+  h1 { margin-top: 0.2rem; }
+  .hero-lede {
+    font-size: 1.05rem;
+    max-width: 46rem;
+    margin: 0.6rem 0 0;
+  }
+}
+
+// Responsive card grid (drivers / quick links)
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.card {
+  display: block;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid $border-color;
+  border-radius: 10px;
+  background: $body-background-color;
+  text-decoration: none !important;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: $link-color;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  // Card internals are span-level on purpose: a Markdown processor treats <a>
+  // as inline and will close it early if it wraps block elements (<h3>/<p>),
+  // spilling the content out of the box. Spans styled as blocks avoid that.
+  .card-db,
+  .card-title,
+  .card-body,
+  .card-meta { display: block; }
+
+  .card-title {
+    margin: 0 0 0.2rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: $body-heading-color;
+    line-height: 1.3;
+  }
+  .card-db {
+    font-size: 0.82rem;
+    color: $link-color;
+    font-weight: 600;
+    margin-bottom: 0.15rem;
+  }
+  .card-body {
+    margin: 0.4rem 0 0;
+    font-size: 0.85rem;
+    color: $body-text-color;
+    line-height: 1.45;
+  }
+  .card-meta {
+    margin-top: 0.7rem;
+    font-size: 0.75rem;
+    color: $grey-dk-000;
+  }
+}
+
+// Inline version + platform badges
+.badge {
+  display: inline-block;
+  padding: 0.12em 0.55em;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.5;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.badge-version { background: rgba(56, 161, 105, 0.15); color: #2f855a; }
+.badge-platform { background: rgba(90, 103, 216, 0.15); color: #4c51bf; }
+.badge-cloud   { background: rgba(128, 90, 213, 0.15); color: #6b46c1; }
+.badge-soon    { background: rgba(160, 174, 192, 0.20); color: #4a5568; }
+
+// Theme toggle button in the header
+.theme-toggle {
+  cursor: pointer;
+  background: none;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.9rem;
+  color: $body-text-color;
+  &:hover { border-color: $link-color; }
+}
