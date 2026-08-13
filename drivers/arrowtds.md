@@ -11,7 +11,7 @@ permalink: /drivers/arrowtds/
 {: .no_toc }
 
 <p>
-  <span class="badge badge-version">v0.5.24</span>
+  <span class="badge badge-version">v0.5.25</span>
   <span class="badge badge-platform">Linux · Windows (x64)</span>
   <span class="badge badge-cloud">Azure SQL · Microsoft Fabric</span>
 </p>

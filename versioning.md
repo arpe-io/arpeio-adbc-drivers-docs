@@ -22,7 +22,7 @@ releases.
 
 | Driver | Database | Current version | What's new |
 |---|---|---|---|
-| [ArrowTDS]({{ '/drivers/arrowtds/' | relative_url }}) | Microsoft SQL Server | **0.5.24** | [Release highlights]({{ '/drivers/arrowtds/whats-new/' | relative_url }}) |
+| [ArrowTDS]({{ '/drivers/arrowtds/' | relative_url }}) | Microsoft SQL Server | **0.5.25** | [Release highlights]({{ '/drivers/arrowtds/whats-new/' | relative_url }}) |
 | [ArrowFEBE]({{ '/drivers/arrowfebe/' | relative_url }}) | PostgreSQL | **0.3.8** | [Release highlights]({{ '/drivers/arrowfebe/whats-new/' | relative_url }}) |
 | [ArrowTTC]({{ '/drivers/arrowttc/' | relative_url }}) | Oracle | **0.2.8** | [Release highlights]({{ '/drivers/arrowttc/whats-new/' | relative_url }}) |
 
