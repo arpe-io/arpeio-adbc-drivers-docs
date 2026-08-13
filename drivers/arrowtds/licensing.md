@@ -58,6 +58,8 @@ process list). See the [install guide]({{ '/install/' | relative_url }}) for det
 
 **As an ADBC option** (keeps it out of the environment):
 
+<p class="code-lang-label">Python</p>
+
 ```python
 import adbc_driver_manager.dbapi as dbapi
 
@@ -89,6 +91,8 @@ separately when using them.
 
 Read the current state with the **read-only** `arpeio.adbc.license.status` database
 option (via `GetOption`):
+
+<p class="code-lang-label">Python</p>
 
 ```python
 db = conn.adbc_connection.adbc_get_option  # low-level handle varies by binding

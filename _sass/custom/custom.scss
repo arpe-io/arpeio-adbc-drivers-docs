@@ -110,3 +110,81 @@
   color: $body-text-color;
   &:hover { border-color: $link-color; }
 }
+
+// ---------------------------------------------------------------------------
+// Multi-language code tabs (see _includes/head_custom.html). Theme-token based
+// so light/dark both work. No-JS: blocks stack (no .code-tabs--enhanced class).
+// ---------------------------------------------------------------------------
+.code-tabs {
+  margin: 0 0 1rem;
+
+  // Only collapse to tabs once JS has built the bar; otherwise show everything.
+  &.code-tabs--enhanced {
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    overflow: hidden;
+
+    // Rouge gives each block its own margin/border-radius; neutralise so the
+    // panel sits flush inside the tab frame.
+    > div[class*="language-"] {
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+    }
+  }
+
+  .code-tabs-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem;
+    padding: 0.3rem 0.4rem 0;
+    border-bottom: 1px solid $border-color;
+    background: $body-background-color;
+  }
+
+  .code-tab {
+    cursor: pointer;
+    background: none;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: $body-text-color;
+    opacity: 0.7;
+
+    &:hover { opacity: 1; }
+
+    &[aria-selected="true"] {
+      opacity: 1;
+      color: $link-color;
+      border-color: $border-color;
+      background: $body-background-color;
+      margin-bottom: -1px;                       // sit on the bar's bottom border
+      border-bottom: 1px solid $body-background-color;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $link-color;
+      outline-offset: -2px;
+    }
+  }
+}
+
+// Static language chip for snippets that are intentionally single-language
+// (e.g. Python-only recipes). Matches the tab look; no JS, no interaction.
+.code-lang-label {
+  display: inline-block;
+  margin: 0 0 -1px;                              // sit on top of the code block below
+  padding: 0.3rem 0.75rem;
+  border: 1px solid $border-color;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  background: $body-background-color;
+  color: $link-color;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.4;
+}

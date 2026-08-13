@@ -64,6 +64,8 @@ curl -fsSL https://raw.githubusercontent.com/arpe-io/adbc-drivers/main/install.s
 3. **Writes an ADBC driver manifest** (`<driver>.toml`) into the ADBC driver
    manager's search path, so the driver loads by name:
 
+   <p class="code-lang-label">Python</p>
+
    ```python
    import adbc_driver_manager.dbapi as dbapi
    with dbapi.connect(driver="arrowtds",

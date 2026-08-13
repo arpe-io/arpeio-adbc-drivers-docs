@@ -34,6 +34,8 @@ can be mixed; a **discrete option always wins** over the same field taken from a
 | **Connection string** | `adbc.arrowfebe.connection_string` | ADO.NET `Key=Value;…` | pasting an existing SQL Server / SqlClient-style string |
 | **Connection URI** | `uri` | `postgresql://…` URL | portable tooling, copy-paste from libpq / psql / ADBC tools |
 
+<p class="code-lang-label">Python</p>
+
 ```python
 import adbc_driver_manager.dbapi as dbapi
 
@@ -299,6 +301,8 @@ Kerberos with NTLM fallback). Mutual authentication is always required and
 enforced — the driver refuses `AuthenticationOk` from a server that never
 completed the GSS exchange, and refuses password-family requests while this mode
 is active.
+
+<p class="code-lang-label">Python</p>
 
 ```python
 # 1. Obtain a ticket:  kinit alice@REALM

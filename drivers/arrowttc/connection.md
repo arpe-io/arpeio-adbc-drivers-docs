@@ -34,6 +34,8 @@ can be mixed; a **discrete option always wins** over the same field taken from a
 | **Connection string** | `adbc.arrowttc.connection_string` | ADO.NET `Key=Value;…` (+ Oracle EZConnect in `Server`) | pasting an existing string |
 | **Connection URI** | `uri` | `oracle://…` URL | portable tooling, copy-paste from other Oracle ADBC tools |
 
+<p class="code-lang-label">Python</p>
+
 ```python
 import adbc_driver_manager.dbapi as dbapi
 
@@ -298,6 +300,8 @@ A downloaded ADB instance wallet works as-is (mutual TLS). Point
 `wallet_location` at the unzipped wallet directory (which contains
 `ewallet.pem`), set `wallet_password`, use `ssl_mode=verify-full`, and connect to
 one of the wallet's `_low` / `_tp` / … services on port **1522**:
+
+<p class="code-lang-label">Python</p>
 
 ```python
 db_kwargs = {

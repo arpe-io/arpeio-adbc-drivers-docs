@@ -40,6 +40,10 @@ libraries. It also covers **Azure SQL** and **Microsoft Fabric Warehouse**.
 
 ## Connect in seconds
 
+Load the driver by name (`arrowtds`) from any ADBC client:
+
+<div class="code-tabs" markdown="1">
+
 ```python
 import adbc_driver_manager.dbapi as dbapi
 with dbapi.connect(driver="arrowtds",
@@ -48,6 +52,86 @@ with dbapi.connect(driver="arrowtds",
     cur.execute("SELECT * FROM dbo.orders")
     table = cur.fetch_arrow_table()
 ```
+
+```cpp
+#include <arrow-adbc/adbc.h>
+// (error checks elided for brevity)
+AdbcError e = {}; AdbcDatabase db = {}; AdbcConnection conn = {}; AdbcStatement st = {};
+AdbcDatabaseNew(&db, &e);
+AdbcDatabaseSetOption(&db, "driver", "arrowtds", &e);
+AdbcDatabaseSetOption(&db, "uri", "sqlserver://sa:<pw>@host:1433/?database=db&encrypt=true", &e);
+AdbcDatabaseInit(&db, &e);
+AdbcConnectionNew(&conn, &e); AdbcConnectionInit(&conn, &db, &e);
+AdbcStatementNew(&conn, &st, &e);
+AdbcStatementSetSqlQuery(&st, "SELECT * FROM dbo.orders", &e);
+ArrowArrayStream stream = {}; int64_t n = -1;
+AdbcStatementExecuteQuery(&st, &stream, &n, &e);   // consume `stream`
+```
+
+```csharp
+using Apache.Arrow.Adbc;
+using Apache.Arrow.Adbc.DriverManager;
+
+using var driver = AdbcDriverManager.FindLoadDriver("arrowtds", loadOptions: AdbcLoadFlags.Default);
+using var database = driver.Open(new Dictionary<string, string> {
+    ["uri"] = "sqlserver://sa:<pw>@host:1433/?database=db&encrypt=true" });
+using var connection = database.Connect(null);
+using var statement = connection.CreateStatement();
+statement.SqlQuery = "SELECT * FROM dbo.orders";
+using var stream = statement.ExecuteQuery().Stream!;   // IArrowArrayStream
+```
+
+```go
+var drv drivermgr.Driver
+db, _ := drv.NewDatabase(map[string]string{
+	"driver":          "arrowtds",
+	adbc.OptionKeyURI: "sqlserver://sa:<pw>@host:1433/?database=db&encrypt=true",
+})
+conn, _ := db.Open(ctx)
+stmt, _ := conn.NewStatement()
+_ = stmt.SetSqlQuery("SELECT * FROM dbo.orders")
+reader, _, _ := stmt.ExecuteQuery(ctx)   // array.RecordReader
+defer reader.Release()
+```
+
+```java
+Map<String, Object> params = new HashMap<>();
+JniDriver.PARAM_DRIVER.set(params, "arrowtds");
+AdbcDriver.PARAM_URI.set(params, "sqlserver://sa:<pw>@host:1433/?database=db&encrypt=true");
+try (BufferAllocator a = new RootAllocator();
+     AdbcDatabase db = new JniDriver(a).open(params);
+     AdbcConnection conn = db.connect();
+     AdbcStatement st = conn.createStatement()) {
+  st.setSqlQuery("SELECT * FROM dbo.orders");
+  try (AdbcStatement.QueryResult r = st.executeQuery()) {
+    ArrowReader reader = r.getReader();
+  }
+}
+```
+
+```r
+library(adbcdrivermanager)
+db  <- adbc_database_init(adbc_driver("arrowtds"),
+                          uri = "sqlserver://sa:<pw>@host:1433/?database=db&encrypt=true")
+con <- adbc_connection_init(db)
+table <- read_adbc(con, "SELECT * FROM dbo.orders") |> arrow::as_arrow_table()
+```
+
+```rust
+use adbc_core::{Connection, Database, Driver, Statement, LOAD_FLAG_DEFAULT};
+use adbc_core::options::{AdbcVersion, OptionDatabase, OptionValue};
+use adbc_driver_manager::ManagedDriver;
+
+let mut driver = ManagedDriver::load_from_name("arrowtds", None, AdbcVersion::default(), LOAD_FLAG_DEFAULT, None)?;
+let mut db = driver.new_database_with_opts([(OptionDatabase::Uri,
+    OptionValue::String("sqlserver://sa:<pw>@host:1433/?database=db&encrypt=true".into()))])?;
+let mut conn = db.new_connection()?;
+let mut stmt = conn.new_statement()?;
+stmt.set_sql_query("SELECT * FROM dbo.orders")?;
+let reader = stmt.execute()?;   // impl RecordBatchReader
+```
+
+</div>
 
 New here? [Install ArrowTDS]({{ '/install/' | relative_url }}) first, then see the
 [Connection guide]({{ '/drivers/arrowtds/connection/' | relative_url }}).

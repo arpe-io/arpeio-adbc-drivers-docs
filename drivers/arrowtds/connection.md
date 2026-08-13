@@ -33,6 +33,8 @@ can be mixed; a **discrete option always wins** over the same field taken from a
 | **Connection string** | `adbc.arrowtds.connection_string` | ADO.NET `Key=Value;…` | pasting an existing SQL Server / SqlClient string |
 | **Connection URI** | `uri` | `sqlserver://…` URL | portable tooling, copy-paste from `go-mssqldb`/ADBC tools |
 
+<p class="code-lang-label">Python</p>
+
 ```python
 import adbc_driver_manager.dbapi as dbapi
 
@@ -316,6 +318,8 @@ combined with a username/password.
 
 Supply a bearer token you acquired out-of-band:
 
+<p class="code-lang-label">Python</p>
+
 ```python
 import subprocess, adbc_driver_manager.dbapi as dbapi
 
@@ -337,6 +341,8 @@ conn = dbapi.connect(driver="arrowtds", db_kwargs={
 
 The driver acquires the token itself; omit `access_token`:
 
+<p class="code-lang-label">Python</p>
+
 ```python
 db_kwargs={
     "adbc.arrowtds.server":        "myserver.database.windows.net",
@@ -357,6 +363,8 @@ connection and refreshes on reconnect.
 On an Azure host (VM/VMSS via IMDS, or App Service / Functions / Container Apps),
 no secret is needed:
 
+<p class="code-lang-label">Python</p>
+
 ```python
 db_kwargs={
     "adbc.arrowtds.server":           "myserver.database.windows.net",
@@ -372,6 +380,8 @@ db_kwargs={
 principal** (`AZURE_TENANT_ID` + `AZURE_CLIENT_ID` + `AZURE_CLIENT_SECRET`) →
 **managed identity** (short probe) → **Azure CLI** (`az account get-access-token`).
 Handy for code that runs unchanged on a dev machine, in CI, and on an Azure host:
+
+<p class="code-lang-label">Python</p>
 
 ```python
 db_kwargs={

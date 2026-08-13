@@ -39,3 +39,98 @@
     });
   })();
 </script>
+
+<!-- Multi-language code tabs. Authors wrap fenced blocks in
+     <div class="code-tabs" markdown="1"> … </div>. We read each rouge `language-*`
+     wrapper, build a tab bar, and keep every group on the page in sync via
+     localStorage. No-JS fallback: the blocks just stack, each already highlighted. -->
+<script>
+  (function () {
+    var KEY = "arpeio-code-lang";
+    var LABELS = { python: "Python", cpp: "C++", csharp: ".NET", go: "Go", java: "Java", r: "R", rust: "Rust" };
+    var ORDER = ["python", "cpp", "csharp", "go", "java", "r", "rust"];
+
+    function saved() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+    function store(s) { try { localStorage.setItem(KEY, s); } catch (e) {} }
+
+    var groups = [];
+
+    function slugOf(el) {
+      var m = (el.className || "").match(/language-([a-z0-9+#_-]+)/i);
+      return m ? m[1].toLowerCase() : null;
+    }
+
+    function select(g, slug, focus) {
+      if (!g.panels[slug]) return false;
+      g.order.forEach(function (s) {
+        var sel = s === slug;
+        g.panels[s].hidden = !sel;
+        var b = g.tabs[s];
+        b.setAttribute("aria-selected", sel ? "true" : "false");
+        b.tabIndex = sel ? 0 : -1;
+        if (sel && focus) b.focus();
+      });
+      return true;
+    }
+
+    function applyAll(slug) {
+      groups.forEach(function (g) { if (!select(g, slug)) select(g, g.order[0]); });
+    }
+
+    function build(root) {
+      var panels = {}, order = [];
+      Array.prototype.slice.call(root.children).forEach(function (c) {
+        var s = slugOf(c);
+        if (s && !panels[s]) panels[s] = c;
+      });
+      ORDER.forEach(function (s) { if (panels[s]) order.push(s); });
+      Object.keys(panels).forEach(function (s) { if (order.indexOf(s) === -1) order.push(s); });
+      if (order.length < 2) return;
+
+      var uid = "ct-" + (groups.length + 1);
+      var bar = document.createElement("div");
+      bar.className = "code-tabs-bar";
+      bar.setAttribute("role", "tablist");
+      bar.setAttribute("aria-label", "Code language");
+
+      var tabs = {}, g = { root: root, panels: panels, tabs: tabs, order: order };
+      order.forEach(function (s) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "code-tab";
+        b.textContent = LABELS[s] || s;
+        b.id = uid + "-tab-" + s;
+        b.setAttribute("role", "tab");
+        b.setAttribute("aria-controls", uid + "-panel-" + s);
+        var p = panels[s];
+        p.id = uid + "-panel-" + s;
+        p.setAttribute("role", "tabpanel");
+        p.setAttribute("tabindex", "0");
+        p.setAttribute("aria-labelledby", b.id);
+        b.addEventListener("click", function () { store(s); applyAll(s); });
+        b.addEventListener("keydown", function (e) {
+          var i = order.indexOf(s), n = null;
+          if (e.key === "ArrowRight") n = order[(i + 1) % order.length];
+          else if (e.key === "ArrowLeft") n = order[(i - 1 + order.length) % order.length];
+          else if (e.key === "Home") n = order[0];
+          else if (e.key === "End") n = order[order.length - 1];
+          if (n) { e.preventDefault(); store(n); applyAll(n); select(g, n, true); }
+        });
+        tabs[s] = b;
+        bar.appendChild(b);
+      });
+
+      root.insertBefore(bar, root.firstChild);
+      root.classList.add("code-tabs--enhanced");
+      groups.push(g);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      Array.prototype.slice.call(document.querySelectorAll(".code-tabs")).forEach(build);
+      if (!groups.length) return;
+      var want = saved();
+      if (!want || ORDER.indexOf(want) === -1) want = "python";
+      applyAll(want);
+    });
+  })();
+</script>

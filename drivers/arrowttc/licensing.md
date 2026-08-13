@@ -46,6 +46,8 @@ key; a copy of the `.so`/`.dll` lifted out of a host bundle is inert on its own.
 
 **As an ADBC option** (keeps it out of the environment):
 
+<p class="code-lang-label">Python</p>
+
 ```python
 import adbc_driver_manager.dbapi as dbapi
 
