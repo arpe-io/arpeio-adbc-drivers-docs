@@ -140,6 +140,14 @@ More tuning guidance in `SQLSERVER_TUNING.md`.
 | `adbc.arrowtds.uuid_casing` | `lower` (default) / `upper` | Hex case of `uniqueidentifier`/GUID values rendered to Arrow `utf8`. `lower` matches RFC 4122 and the `mssql` connection type. |
 | `adbc.arrowtds.geospatial` | `geoarrow` (default) / `wkb` / `varbinary` | How `geometry`/`geography` (CLR UDT) columns are read. See [`DATA_TYPES.md`]({{ '/drivers/arrowtds/data-types/' | relative_url }}#geospatial-types). |
 
+### Ingest SRID (write path)
+
+> Since ArrowTDS v0.5.25.
+
+| Option | Default | Meaning |
+|---|---|---|
+| `adbc.arrowtds.ingest.srid` | unset (`-1`) | SRID stamped into every `geometry`/`geography` value written on the Arrow WKB → UDT ingest path. Must be an integer `>= -1`. When unset, the driver uses the column's GeoArrow `crs` metadata if present, otherwise the kind default (`geometry` 0, `geography` 4326). See [`DATA_TYPES.md`]({{ '/drivers/arrowtds/data-types/' | relative_url }}#write-path-arrow--sql-server-ingest--bind). |
+
 ### Licence
 
 | Option | Meaning |

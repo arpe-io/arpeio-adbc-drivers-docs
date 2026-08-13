@@ -22,6 +22,30 @@ curl -fsSL https://raw.githubusercontent.com/arpe-io/adbc-drivers/main/install.s
 
 ---
 
+## Write geospatial data, not just read it — August 2026 (v0.5.25)
+
+ArrowTDS already read `geometry`/`geography` columns as GeoArrow WKB; now it can
+**write** them too. On `adbc_ingest` and bind, Arrow WKB cells are converted
+client-side to SQL Server's native UDT format and bulk-loaded, so a spatial column
+you extract round-trips straight back in — no `STGeomFromWKB` round-trip in SQL.
+
+- **Full geometry coverage.** Point, LineString, Polygon (with holes), the
+  `Multi*` collections, and `GeometryCollection` — nested arbitrarily — plus Z, M,
+  and ZM ordinates and empty geometries. `geography` values get the correct
+  latitude/longitude axis order automatically.
+- **SRID handling that just works.** Set one explicitly with the new
+  [`adbc.arrowtds.ingest.srid`]({{ '/drivers/arrowtds/connection/' | relative_url }}#ingest-srid-write-path)
+  option, let the driver read it from your GeoArrow `crs` metadata, or fall back to
+  the sensible default (`0` for `geometry`, `4326` for `geography`).
+- **Bad data is caught early.** Unsupported curves and `FullGlobe`, malformed WKB,
+  and mismatched `Multi*` members are rejected client-side with a clear error
+  before anything reaches the server.
+
+Everything else is unchanged: reads, Parquet export, and all non-spatial ingest
+produce byte-for-byte identical output to v0.5.24. This release also completes the
+v0.5.24 artifact-hygiene pass by keeping an OpenSSL source-path string out of the
+shipped binary on all platforms.
+
 ## Hardened, reproducible release builds — August 2026 (v0.5.24)
 
 A supply-chain and artifact-hygiene pass over the release build, with **no driver

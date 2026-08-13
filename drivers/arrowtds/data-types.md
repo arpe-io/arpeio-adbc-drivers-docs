@@ -136,11 +136,13 @@ first row — then fixes the schema.
 - **Schema-only execution** (`Statement.ExecuteSchema`) reports spatial columns as
   plain `binary` — it runs under `FMTONLY`, so no rows and no SRID come back.
   Bound-parameter SELECTs (`WHERE id = ?`) *are* converted normally.
-- The **write/ingest path** (Arrow WKB → `geometry`/`geography`) is a planned
-  follow-up; only read/extract is implemented today.
 - A malformed or unknown-version spatial value fails the read with a clear error
   naming the column; `geospatial=varbinary` reads the raw UDT bytes as an escape
   hatch.
+
+The **write/ingest path** (Arrow WKB → `geometry`/`geography`) shipped in
+ArrowTDS v0.5.25 — see [Write path](#write-path-arrow--sql-server-ingest--bind)
+below.
 
 [MS-SSCLRT]: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssclrt/
 
@@ -162,6 +164,18 @@ Server types:
 - `fixed_size_list<float32>[n]` ingests to a SQL Server 2025 **`VECTOR(n)`** column
   (native binary; `mode=create` emits `VECTOR(n)` DDL). Only the float32 child is
   supported; requires the negotiated native-vector transport.
+- **Arrow WKB → `geometry`/`geography`** (since v0.5.25). WKB cells are transcoded
+  client-side to Microsoft's `[MS-SSCLRT]` UDT format and PLP-framed on `INSERT
+  BULK`, so a column extracted as `geoarrow.wkb` round-trips back in. Point,
+  LineString, Polygon (with interior rings), the `Multi*` containers, and
+  `GeometryCollection` are supported recursively, along with Z/M/ZM ordinates and
+  empty geometries; `geography` gets the (x, y) → (lat, long) axis-order swap. The
+  SRID stamped into each value comes from
+  [`adbc.arrowtds.ingest.srid`]({{ '/drivers/arrowtds/connection/' | relative_url }}#ingest-srid-write-path),
+  or, when that is unset, from the column's GeoArrow `crs` metadata, falling back
+  to the kind default (`geometry` 0, `geography` 4326). Curves, `FullGlobe`,
+  malformed WKB, and heterogeneous `Multi*` children are rejected at encode time
+  with a clear error rather than sent to the server.
 
 Bind inputs with **no** SQL Server equivalent return `NOT_IMPLEMENTED`/are
 xfailed: `float16`, `null`-typed and dictionary-encoded parameters, and Arrow
