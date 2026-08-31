@@ -11,7 +11,7 @@ permalink: /drivers/arrowttc/
 {: .no_toc }
 
 <p>
-  <span class="badge badge-version">v0.2.8</span>
+  <span class="badge badge-version">v0.2.9</span>
   <span class="badge badge-platform">Linux · Windows (x64)</span>
   <span class="badge badge-cloud">Oracle Cloud Autonomous Database</span>
 </p>

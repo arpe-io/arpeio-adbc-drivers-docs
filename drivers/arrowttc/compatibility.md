@@ -30,19 +30,20 @@ ArrowTTC speaks **TNS (Oracle Net) + TTC (Two-Task Common)** natively over TCP
 
 | Version | State | Notes |
 |---|---|---|
+| Oracle 12c | ✅ Validated | Type-matrix round-trip verified live (Enterprise 12.2.0.1). The 12c O5LOGON PBKDF2 verifier and the 12c TTC field version are exercised end to end. |
+| Oracle 18c | ✅ Validated | Type-matrix round-trip verified live (Oracle 18c XE). Same `DESCRIBE_INFO` surface as 19c. |
 | Oracle 19c | ✅ Validated | Primary development & CI target. Password, TLS, NNE, Kerberos, OCI IAM token, OAuth2/Entra all verified live. |
-| Oracle 18c | 🟢 Supported | Verified at the first release; same `DESCRIBE_INFO` surface as 19c. Not tested continuously. |
-| Oracle 12c | 🟡 Not yet validated | TTC field version and O5LOGON verifier are expected to work; untested. |
-| Oracle 18c XE | 🟡 Not yet validated | Express Edition not separately exercised. |
-| Oracle 21c | 🟡 Not yet validated | **Connects and authenticates**, but the `DESCRIBE_INFO` (column-metadata) layout differs from 19c and is not yet parsed — queries can fail on describe. Best-effort until the 21c describe work lands. |
-| Oracle 23ai | 🟡 Not yet validated | As 21c; also adds native JSON / BOOLEAN column types not yet decoded. Best-effort. |
+| Oracle 21c | ✅ Validated | Type-matrix round-trip verified live (Oracle 21c XE). Reports TTC field version 16 and parses cleanly. |
+| Oracle 23ai | 🟡 Not yet validated | Connects, but 23ai reports TTC field version 25 (23_4+): the server appends native VECTOR describe fields and can return native `BOOLEAN`/`JSON` columns only when the client advertises field version 23_4 — which also switches the auth handshake to a `PROTOCOL` renegotiation. Native-type decode + the fv-23_4 auth flow are a tracked follow-up. Best-effort until then. |
+| Oracle 26ai (23.26) | 🟡 Not yet validated | Oracle's rebrand of 23ai — version `23.26.x`, same protocol family. Same follow-up as 23ai. |
 
 There is no z/OS / mainframe Oracle edition — that concept is specific to the
 Db2/DRDA sibling (ArrowDRDA) and does not
 apply to Oracle.
 
-**19c is the target line.** 21c and 23ai are on the roadmap; 12c/18c-XE are
-protocol-plausible but unverified.
+**19c is the primary target.** 12c, 18c and 21c are now validated live (the
+type-matrix round-trip passes on each); 23ai/26ai are a tracked follow-up
+(native `BOOLEAN`/`JSON`/`VECTOR` decode plus the field-version-23_4 auth flow).
 
 ---
 
