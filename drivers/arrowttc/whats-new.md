@@ -17,6 +17,19 @@ change) lives in `CHANGELOG.md`.
 
 ---
 
+## Validated on Oracle 12c / 18c / 19c / 21c — August 2026 (v0.2.9)
+
+ArrowTTC is now validated live against Oracle **12c, 18c, 19c and 21c**. The full
+type-matrix round-trip — every NUMBER mapping branch, `BINARY_FLOAT`/`BINARY_DOUBLE`,
+`DATE`, all `TIMESTAMP` variants including TZ/LTZ, `RAW`, both `INTERVAL` kinds, and
+`VARCHAR2`/`CHAR`/`NVARCHAR2`/`NCHAR` with multibyte and astral text — passes against a
+live server of each version, on the same driver binary with no version-specific code
+paths. See [Compatibility]({{ '/drivers/arrowttc/compatibility/' | relative_url }}).
+Oracle **23ai / 26ai** (which report TTC field version 24/25 and gate native
+`BOOLEAN`/`JSON`/`VECTOR` columns behind a field-version-23_4 auth renegotiation) are a
+tracked follow-up. Validation and documentation only — the binaries are identical to
+v0.2.8.
+
 ## Hardened release binaries — August 2026 (v0.2.8)
 
 The `linux-x64` `.so` and `win-x64` `.dll` published on each release tag are now

@@ -24,7 +24,7 @@ releases.
 |---|---|---|---|
 | [ArrowTDS]({{ '/drivers/arrowtds/' | relative_url }}) | Microsoft SQL Server | **0.5.25** | [Release highlights]({{ '/drivers/arrowtds/whats-new/' | relative_url }}) |
 | [ArrowFEBE]({{ '/drivers/arrowfebe/' | relative_url }}) | PostgreSQL | **0.3.8** | [Release highlights]({{ '/drivers/arrowfebe/whats-new/' | relative_url }}) |
-| [ArrowTTC]({{ '/drivers/arrowttc/' | relative_url }}) | Oracle | **0.2.8** | [Release highlights]({{ '/drivers/arrowttc/whats-new/' | relative_url }}) |
+| [ArrowTTC]({{ '/drivers/arrowttc/' | relative_url }}) | Oracle | **0.2.9** | [Release highlights]({{ '/drivers/arrowttc/whats-new/' | relative_url }}) |
 
 Run the installer's `--list` for the authoritative, always-current set:
 
@@ -44,7 +44,7 @@ curl -fsSL https://raw.githubusercontent.com/arpe-io/adbc-drivers/main/install.s
   cannot drift apart.
 - **Release tags map to download assets.** Binaries are published to this repo's
   Releases under a per-driver tag, `arrow<code>-v<X.Y.Z>` (e.g.
-  `arrowttc-v0.2.8`), each with a `SHA256SUMS`. The installer maps a load name +
+  `arrowttc-v0.2.9`), each with a `SHA256SUMS`. The installer maps a load name +
   version to the matching asset.
 - **Pin a version** at install time with `--version X.Y.Z` (`-Version` on
   Windows); the default is `latest`.
