@@ -37,10 +37,6 @@ ArrowTTC speaks **TNS (Oracle Net) + TTC (Two-Task Common)** natively over TCP
 | Oracle 23ai | 🟡 Not yet validated | Connects, but 23ai reports TTC field version 25 (23_4+): the server appends native VECTOR describe fields and can return native `BOOLEAN`/`JSON` columns only when the client advertises field version 23_4 — which also switches the auth handshake to a `PROTOCOL` renegotiation. Native-type decode + the fv-23_4 auth flow are a tracked follow-up. Best-effort until then. |
 | Oracle 26ai (23.26) | 🟡 Not yet validated | Oracle's rebrand of 23ai — version `23.26.x`, same protocol family. Same follow-up as 23ai. |
 
-There is no z/OS / mainframe Oracle edition — that concept is specific to the
-Db2/DRDA sibling (ArrowDRDA) and does not
-apply to Oracle.
-
 **19c is the primary target.** 12c, 18c and 21c are now validated live (the
 type-matrix round-trip passes on each); 23ai/26ai are a tracked follow-up
 (native `BOOLEAN`/`JSON`/`VECTOR` decode plus the field-version-23_4 auth flow).
