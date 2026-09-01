@@ -51,7 +51,7 @@ Load the driver by name (`arrowttc`) from any ADBC client:
 ```python
 import adbc_driver_manager.dbapi as dbapi
 with dbapi.connect(driver="arrowttc",
-                   db_kwargs={"uri": "oracle://scott:tiger@dbhost:1521/orclpdb1?ssl_mode=verify-full"}) as conn:
+                   db_kwargs={"uri": "oracle://dbuser:<password>@dbhost:1521/appdb?ssl_mode=verify-full"}) as conn:
     cur = conn.cursor()
     cur.execute("SELECT * FROM hr.employees")
     table = cur.fetch_arrow_table()
@@ -63,7 +63,7 @@ with dbapi.connect(driver="arrowttc",
 AdbcError e = {}; AdbcDatabase db = {}; AdbcConnection conn = {}; AdbcStatement st = {};
 AdbcDatabaseNew(&db, &e);
 AdbcDatabaseSetOption(&db, "driver", "arrowttc", &e);
-AdbcDatabaseSetOption(&db, "uri", "oracle://scott:tiger@dbhost:1521/orclpdb1?ssl_mode=verify-full", &e);
+AdbcDatabaseSetOption(&db, "uri", "oracle://dbuser:<password>@dbhost:1521/appdb?ssl_mode=verify-full", &e);
 AdbcDatabaseInit(&db, &e);
 AdbcConnectionNew(&conn, &e); AdbcConnectionInit(&conn, &db, &e);
 AdbcStatementNew(&conn, &st, &e);
@@ -78,7 +78,7 @@ using Apache.Arrow.Adbc.DriverManager;
 
 using var driver = AdbcDriverManager.FindLoadDriver("arrowttc", loadOptions: AdbcLoadFlags.Default);
 using var database = driver.Open(new Dictionary<string, string> {
-    ["uri"] = "oracle://scott:tiger@dbhost:1521/orclpdb1?ssl_mode=verify-full" });
+    ["uri"] = "oracle://dbuser:<password>@dbhost:1521/appdb?ssl_mode=verify-full" });
 using var connection = database.Connect(null);
 using var statement = connection.CreateStatement();
 statement.SqlQuery = "SELECT * FROM hr.employees";
@@ -89,7 +89,7 @@ using var stream = statement.ExecuteQuery().Stream!;   // IArrowArrayStream
 var drv drivermgr.Driver
 db, _ := drv.NewDatabase(map[string]string{
 	"driver":          "arrowttc",
-	adbc.OptionKeyURI: "oracle://scott:tiger@dbhost:1521/orclpdb1?ssl_mode=verify-full",
+	adbc.OptionKeyURI: "oracle://dbuser:<password>@dbhost:1521/appdb?ssl_mode=verify-full",
 })
 conn, _ := db.Open(ctx)
 stmt, _ := conn.NewStatement()
@@ -101,7 +101,7 @@ defer reader.Release()
 ```java
 Map<String, Object> params = new HashMap<>();
 JniDriver.PARAM_DRIVER.set(params, "arrowttc");
-AdbcDriver.PARAM_URI.set(params, "oracle://scott:tiger@dbhost:1521/orclpdb1?ssl_mode=verify-full");
+AdbcDriver.PARAM_URI.set(params, "oracle://dbuser:<password>@dbhost:1521/appdb?ssl_mode=verify-full");
 try (BufferAllocator a = new RootAllocator();
      AdbcDatabase db = new JniDriver(a).open(params);
      AdbcConnection conn = db.connect();
@@ -116,7 +116,7 @@ try (BufferAllocator a = new RootAllocator();
 ```r
 library(adbcdrivermanager)
 db  <- adbc_database_init(adbc_driver("arrowttc"),
-                          uri = "oracle://scott:tiger@dbhost:1521/orclpdb1?ssl_mode=verify-full")
+                          uri = "oracle://dbuser:<password>@dbhost:1521/appdb?ssl_mode=verify-full")
 con <- adbc_connection_init(db)
 table <- read_adbc(con, "SELECT * FROM hr.employees") |> arrow::as_arrow_table()
 ```
@@ -128,7 +128,7 @@ use adbc_driver_manager::ManagedDriver;
 
 let mut driver = ManagedDriver::load_from_name("arrowttc", None, AdbcVersion::default(), LOAD_FLAG_DEFAULT, None)?;
 let mut db = driver.new_database_with_opts([(OptionDatabase::Uri,
-    OptionValue::String("oracle://scott:tiger@dbhost:1521/orclpdb1?ssl_mode=verify-full".into()))])?;
+    OptionValue::String("oracle://dbuser:<password>@dbhost:1521/appdb?ssl_mode=verify-full".into()))])?;
 let mut conn = db.new_connection()?;
 let mut stmt = conn.new_statement()?;
 stmt.set_sql_query("SELECT * FROM hr.employees")?;

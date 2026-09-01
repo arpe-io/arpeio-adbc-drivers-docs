@@ -42,8 +42,8 @@ import adbc_driver_manager.dbapi as dbapi
 # Discrete options
 conn = dbapi.connect(driver="arrowfebe", db_kwargs={
     "adbc.arrowfebe.server":   "localhost",
-    "adbc.arrowfebe.database": "tpch",
-    "adbc.arrowfebe.username": "alice",
+    "adbc.arrowfebe.database": "appdb",
+    "adbc.arrowfebe.username": "dbuser",
     "adbc.arrowfebe.password": "<password>",
     "adbc.arrowfebe.sslmode":  "require",
 }, autocommit=True)
@@ -51,12 +51,12 @@ conn = dbapi.connect(driver="arrowfebe", db_kwargs={
 # Connection string (ADO.NET grammar)
 conn = dbapi.connect(driver="arrowfebe", db_kwargs={
     "adbc.arrowfebe.connection_string":
-        "Server=localhost;Database=tpch;User ID=alice;Password=<password>",
+        "Server=localhost;Database=appdb;User ID=dbuser;Password=<password>",
 }, autocommit=True)
 
 # Connection URI (libpq grammar)
 conn = dbapi.connect(driver="arrowfebe", db_kwargs={
-    "uri": "postgresql://alice:<password>@localhost:5432/tpch?sslmode=require",
+    "uri": "postgresql://dbuser:<password>@localhost:5432/appdb?sslmode=require",
 }, autocommit=True)
 ```
 
@@ -99,7 +99,7 @@ integrated path under
 | `adbc.arrowfebe.auth_type` | `sql`/`SqlPassword`, `integrated`/`sspi`/`trusted` | Selects the auth mode explicitly. The Entra ID / certificate families are recognised and rejected (ArrowFEBE is the driver — it cannot delegate to a client library). |
 | `adbc.arrowfebe.krb5.keytab` | path | Kerberos keytab for integrated auth (service accounts that cannot `kinit`). |
 | `adbc.arrowfebe.krb5.ccache` | path | Kerberos credential cache (default: the ambient ccache from `kinit`). |
-| `adbc.arrowfebe.krb5.principal` | name | Kerberos client principal (e.g. `alice@REALM`), with `krb5.password` for a programmatic kinit. |
+| `adbc.arrowfebe.krb5.principal` | name | Kerberos client principal (e.g. `dbuser@REALM`), with `krb5.password` for a programmatic kinit. |
 | `adbc.arrowfebe.krb5.password` | string | Password to obtain a TGT for `krb5.principal`. |
 | `adbc.arrowfebe.krb5.spn` | SPN | Override the full derived service principal name (e.g. `postgres/db.example.com@REALM`). |
 | `adbc.arrowfebe.krbsrvname` | name | Override the service-name component of the SPN (default `postgres`, mirroring libpq). |
@@ -213,7 +213,7 @@ above.
 | `KrbSrvName` | `krbsrvname` |
 
 ```
-Server=localhost;Database=tpch;User ID=alice;Password=secret;Integrated Security=false
+Server=localhost;Database=appdb;User ID=dbuser;Password=<password>;Integrated Security=false
 ```
 
 ---
@@ -238,7 +238,7 @@ unchanged.
 - The **path segment is the database name** (as in libpq) — not an instance name.
 - `host`, `userinfo`, and query values are **percent-decoded**; a `+` in a query
   value decodes to a space. IPv6 hosts use the bracketed form:
-  `postgresql://[::1]:5432/tpch`.
+  `postgresql://[::1]:5432/appdb`.
 
 **Query parameters** (unknown or repeated parameters are rejected):
 
@@ -305,11 +305,11 @@ is active.
 <p class="code-lang-label">Python</p>
 
 ```python
-# 1. Obtain a ticket:  kinit alice@REALM
+# 1. Obtain a ticket:  kinit dbuser@REALM
 # 2. Connect — the ambient ccache is used automatically:
 conn = dbapi.connect(driver="arrowfebe", db_kwargs={
     "adbc.arrowfebe.server":    "db.example.com",
-    "adbc.arrowfebe.database":  "mydb",
+    "adbc.arrowfebe.database":  "appdb",
     "adbc.arrowfebe.auth_type": "integrated",
     # optional explicit credentials:
     # "adbc.arrowfebe.krb5.ccache": "/tmp/krb5cc_1000",

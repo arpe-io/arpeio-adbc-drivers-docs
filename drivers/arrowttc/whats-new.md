@@ -88,7 +88,7 @@ ingredient of other tools:
   library path to wire up. The manifest version is parsed from the header, so it
   can't drift.
 - **Portable connection URIs** — a real Oracle URL parser behind the standard
-  `uri` option: `oracle://scott:tiger@dbhost:1521/orclpdb1?ssl_mode=verify-full`
+  `uri` option: `oracle://dbuser:<password>@dbhost:1521/appdb?ssl_mode=verify-full`
   (or the branded `arrowttc://`). The path segment is the service name; `?sid=`
   selects the SID form.
 - Matching the ArrowTDS / ArrowFEBE convention across the driver family.

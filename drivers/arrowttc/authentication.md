@@ -19,7 +19,7 @@ verifiers are both supported and selected automatically from the server's
 challenge.
 
 ```
-Server=dbhost:1521/orclpdb1;User ID=scott;Password=tiger
+Server=dbhost:1521/appdb;User ID=dbuser;Password=<password>
 ```
 
 The password is **never sent in clear**, even without TLS: it is AES-encrypted
@@ -41,7 +41,7 @@ ALTER USER target GRANT CONNECT THROUGH proxyacct;
 ```
 
 ```
-Server=dbhost:1521/orclpdb1;User ID=proxyacct;Password=...;Proxy User=target
+Server=dbhost:1521/appdb;User ID=proxyacct;Password=...;Proxy User=target
 ```
 
 Inside the session, `SYS_CONTEXT('USERENV','SESSION_USER')` is `TARGET` and
@@ -55,7 +55,7 @@ one. The old password authenticates the request; the new one takes effect on
 success.
 
 ```
-Server=dbhost:1521/orclpdb1;User ID=scott;Password=old;New Password=new
+Server=dbhost:1521/appdb;User ID=dbuser;Password=old;New Password=new
 ```
 
 After a successful connect the new password authenticates and the old one no
@@ -79,7 +79,7 @@ Password` unlocks an encrypted wallet key. TCPS listeners conventionally use
 port 2484 — set `Port` explicitly.
 
 ```
-Server=dbhost:2484/orclpdb1;User ID=scott;Password=tiger;
+Server=dbhost:2484/appdb;User ID=dbuser;Password=<password>;
 sslmode=verify-full;wallet_location=/etc/oracle/wallet
 ```
 
@@ -118,7 +118,7 @@ otherwise defaults to `oracle/<host>`; `Kerberos Realm` supplies the default
 realm when the principal carries none.
 
 ```
-Server=dbhost:1521/orclpdb1;Auth Method=kerberos;Kerberos Cred Mode=ccache;
+Server=dbhost:1521/appdb;Auth Method=kerberos;Kerberos Cred Mode=ccache;
 Kerberos SPN=oracle/dbhost.example.com
 ```
 

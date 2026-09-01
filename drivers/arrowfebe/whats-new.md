@@ -49,7 +49,7 @@ the freeable session — and completes the ADBC 1.1.0 statistics surface with
 Connect with a standard libpq-style PostgreSQL URI on the ADBC `uri` option:
 
 ```
-postgresql://alice:secret@db.example:5432/tpch?sslmode=require
+postgresql://dbuser:<password>@db.example:5432/appdb?sslmode=require
 ```
 
 Schemes `postgresql://`, `postgres://`, and the branded `arrowfebe://` are

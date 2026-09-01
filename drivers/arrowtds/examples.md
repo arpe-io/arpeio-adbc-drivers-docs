@@ -36,8 +36,8 @@ import adbc_driver_manager.dbapi as dbapi
 
 with dbapi.connect(
     driver="arrowtds",
-    db_kwargs={"uri": "sqlserver://sa:<password>@localhost:1433/"
-                      "?database=tpch&encrypt=true&TrustServerCertificate=true"},
+    db_kwargs={"uri": "sqlserver://dbuser:<password>@localhost:1433/"
+                      "?database=appdb&encrypt=true&TrustServerCertificate=true"},
 ) as conn, conn.cursor() as cur:
     cur.execute("SELECT TOP 10 * FROM lineitem")
     table = cur.fetch_arrow_table()     # pyarrow.Table
@@ -65,8 +65,8 @@ int main() {
   CHECK(AdbcDatabaseSetOption(&database, "driver", "arrowtds", &error));
   CHECK(AdbcDatabaseSetOption(
       &database, "uri",
-      "sqlserver://sa:<password>@localhost:1433/"
-      "?database=tpch&encrypt=true&TrustServerCertificate=true", &error));
+      "sqlserver://dbuser:<password>@localhost:1433/"
+      "?database=appdb&encrypt=true&TrustServerCertificate=true", &error));
   CHECK(AdbcDatabaseInit(&database, &error));
 
   AdbcConnection connection = {};
@@ -95,7 +95,7 @@ using Apache.Arrow.Adbc.DriverManager;
 
 var parameters = new Dictionary<string, string>
 {
-    ["uri"] = "sqlserver://sa:<password>@localhost:1433/?database=tpch&encrypt=true&TrustServerCertificate=true",
+    ["uri"] = "sqlserver://dbuser:<password>@localhost:1433/?database=appdb&encrypt=true&TrustServerCertificate=true",
 };
 
 // Load the driver by name from the installed ADBC manifest.
@@ -130,7 +130,7 @@ func main() {
 	// Load the driver by name from the installed ADBC manifest.
 	db, err := drv.NewDatabase(map[string]string{
 		"driver":          "arrowtds",
-		adbc.OptionKeyURI: "sqlserver://sa:<password>@localhost:1433/?database=tpch&encrypt=true&TrustServerCertificate=true",
+		adbc.OptionKeyURI: "sqlserver://dbuser:<password>@localhost:1433/?database=appdb&encrypt=true&TrustServerCertificate=true",
 	})
 	if err != nil {
 		panic(err)
@@ -181,7 +181,7 @@ public class ConnectAndQuery {
     // Load the driver by name from the installed ADBC manifest.
     JniDriver.PARAM_DRIVER.set(parameters, "arrowtds");
     AdbcDriver.PARAM_URI.set(parameters,
-        "sqlserver://sa:<password>@localhost:1433/?database=tpch&encrypt=true&TrustServerCertificate=true");
+        "sqlserver://dbuser:<password>@localhost:1433/?database=appdb&encrypt=true&TrustServerCertificate=true");
 
     try (BufferAllocator allocator = new RootAllocator();
         AdbcDatabase db = new JniDriver(allocator).open(parameters);
@@ -204,7 +204,7 @@ library(arrow)
 # Load the driver by name from the installed ADBC manifest.
 db <- adbc_database_init(
   adbc_driver("arrowtds"),
-  uri = "sqlserver://sa:<password>@localhost:1433/?database=tpch&encrypt=true&TrustServerCertificate=true"
+  uri = "sqlserver://dbuser:<password>@localhost:1433/?database=appdb&encrypt=true&TrustServerCertificate=true"
 )
 con <- adbc_connection_init(db)
 
@@ -228,7 +228,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut database = driver.new_database_with_opts([(
         OptionDatabase::Uri,
         OptionValue::String(
-            "sqlserver://sa:<password>@localhost:1433/?database=tpch&encrypt=true&TrustServerCertificate=true".into(),
+            "sqlserver://dbuser:<password>@localhost:1433/?database=appdb&encrypt=true&TrustServerCertificate=true".into(),
         ),
     )])?;
     let mut connection = database.new_connection()?;
@@ -253,8 +253,8 @@ where the `uri` went — the rest of each program is identical to the recipe abo
 ```python
 conn = dbapi.connect(driver="arrowtds", db_kwargs={
     "adbc.arrowtds.server":            "localhost",
-    "adbc.arrowtds.database":          "tpch",
-    "adbc.arrowtds.username":          "sa",
+    "adbc.arrowtds.database":          "appdb",
+    "adbc.arrowtds.username":          "dbuser",
     "adbc.arrowtds.password":          "<password>",
     "adbc.arrowtds.encrypt":           "true",
     "adbc.arrowtds.trust_server_cert": "true",
@@ -265,8 +265,8 @@ conn = dbapi.connect(driver="arrowtds", db_kwargs={
 CHECK(AdbcDatabaseNew(&database, &error));
 CHECK(AdbcDatabaseSetOption(&database, "driver", "arrowtds", &error));
 CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowtds.server", "localhost", &error));
-CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowtds.database", "tpch", &error));
-CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowtds.username", "sa", &error));
+CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowtds.database", "appdb", &error));
+CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowtds.username", "dbuser", &error));
 CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowtds.password", "<password>", &error));
 CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowtds.encrypt", "true", &error));
 CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowtds.trust_server_cert", "true", &error));
@@ -277,8 +277,8 @@ CHECK(AdbcDatabaseInit(&database, &error));
 var parameters = new Dictionary<string, string>
 {
     ["adbc.arrowtds.server"]            = "localhost",
-    ["adbc.arrowtds.database"]          = "tpch",
-    ["adbc.arrowtds.username"]          = "sa",
+    ["adbc.arrowtds.database"]          = "appdb",
+    ["adbc.arrowtds.username"]          = "dbuser",
     ["adbc.arrowtds.password"]          = "<password>",
     ["adbc.arrowtds.encrypt"]           = "true",
     ["adbc.arrowtds.trust_server_cert"] = "true",
@@ -291,8 +291,8 @@ using AdbcDatabase database = driver.Open(parameters);
 db, err := drv.NewDatabase(map[string]string{
 	"driver":                          "arrowtds",
 	"adbc.arrowtds.server":            "localhost",
-	"adbc.arrowtds.database":          "tpch",
-	"adbc.arrowtds.username":          "sa",
+	"adbc.arrowtds.database":          "appdb",
+	"adbc.arrowtds.username":          "dbuser",
 	"adbc.arrowtds.password":          "<password>",
 	"adbc.arrowtds.encrypt":           "true",
 	"adbc.arrowtds.trust_server_cert": "true",
@@ -303,8 +303,8 @@ db, err := drv.NewDatabase(map[string]string{
 Map<String, Object> parameters = new HashMap<>();
 JniDriver.PARAM_DRIVER.set(parameters, "arrowtds");
 parameters.put("adbc.arrowtds.server", "localhost");
-parameters.put("adbc.arrowtds.database", "tpch");
-parameters.put("adbc.arrowtds.username", "sa");
+parameters.put("adbc.arrowtds.database", "appdb");
+parameters.put("adbc.arrowtds.username", "dbuser");
 parameters.put("adbc.arrowtds.password", "<password>");
 parameters.put("adbc.arrowtds.encrypt", "true");
 parameters.put("adbc.arrowtds.trust_server_cert", "true");
@@ -315,8 +315,8 @@ AdbcDatabase db = new JniDriver(allocator).open(parameters);
 db <- adbc_database_init(
   adbc_driver("arrowtds"),
   adbc.arrowtds.server            = "localhost",
-  adbc.arrowtds.database          = "tpch",
-  adbc.arrowtds.username          = "sa",
+  adbc.arrowtds.database          = "appdb",
+  adbc.arrowtds.username          = "dbuser",
   adbc.arrowtds.password          = "<password>",
   adbc.arrowtds.encrypt           = "true",
   adbc.arrowtds.trust_server_cert = "true"
@@ -326,8 +326,8 @@ db <- adbc_database_init(
 ```rust
 let mut database = driver.new_database_with_opts([
     (OptionDatabase::Other("adbc.arrowtds.server".into()),            OptionValue::String("localhost".into())),
-    (OptionDatabase::Other("adbc.arrowtds.database".into()),          OptionValue::String("tpch".into())),
-    (OptionDatabase::Other("adbc.arrowtds.username".into()),          OptionValue::String("sa".into())),
+    (OptionDatabase::Other("adbc.arrowtds.database".into()),          OptionValue::String("appdb".into())),
+    (OptionDatabase::Other("adbc.arrowtds.username".into()),          OptionValue::String("dbuser".into())),
     (OptionDatabase::Other("adbc.arrowtds.password".into()),          OptionValue::String("<password>".into())),
     (OptionDatabase::Other("adbc.arrowtds.encrypt".into()),           OptionValue::String("true".into())),
     (OptionDatabase::Other("adbc.arrowtds.trust_server_cert".into()), OptionValue::String("true".into())),
@@ -342,7 +342,7 @@ Or the DB-API shortcut from the Python package:
 
 ```python
 import arrowtds_adbc
-conn = arrowtds_adbc.connect("localhost", "tpch", "sa", "<password>")
+conn = arrowtds_adbc.connect("localhost", "appdb", "dbuser", "<password>")
 ```
 
 ## Straight to pandas / Polars / DuckDB
@@ -666,7 +666,7 @@ No username/password — Windows SSPI or POSIX Kerberos:
 ```python
 conn = dbapi.connect(driver="arrowtds", db_kwargs={
     "adbc.arrowtds.server":   "sql.corp.example.com",
-    "adbc.arrowtds.database": "mydb",
+    "adbc.arrowtds.database": "appdb",
     "adbc.arrowtds.trusted":  "true",
     # optional explicit Kerberos credentials on Linux/macOS:
     # "adbc.arrowtds.krb5.ccache": "/tmp/krb5cc_1000",
@@ -692,7 +692,7 @@ token = subprocess.check_output(
 
 conn = dbapi.connect(driver="arrowtds", db_kwargs={
     "adbc.arrowtds.server":       "myserver.database.windows.net",
-    "adbc.arrowtds.database":     "mydb",
+    "adbc.arrowtds.database":     "appdb",
     "adbc.arrowtds.encrypt":      "true",
     "adbc.arrowtds.access_token": token,
 })

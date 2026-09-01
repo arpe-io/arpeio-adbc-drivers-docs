@@ -65,8 +65,8 @@ import adbc_driver_manager.dbapi as dbapi
 
 conn = dbapi.connect(driver="arrowtds", db_kwargs={
     "adbc.arrowtds.server":     "localhost",
-    "adbc.arrowtds.database":   "tpch",
-    "adbc.arrowtds.username":   "sa",
+    "adbc.arrowtds.database":   "appdb",
+    "adbc.arrowtds.username":   "dbuser",
     "adbc.arrowtds.password":   "<password>",
     "arpeio.adbc.license_file": "/etc/arpeio/arpeio_adbc.lic",
 })

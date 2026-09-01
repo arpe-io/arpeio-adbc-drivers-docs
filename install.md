@@ -69,7 +69,7 @@ curl -fsSL https://raw.githubusercontent.com/arpe-io/adbc-drivers/main/install.s
    ```python
    import adbc_driver_manager.dbapi as dbapi
    with dbapi.connect(driver="arrowtds",
-                      db_kwargs={"uri": "sqlserver://sa:<pw>@host:1433/?database=db&encrypt=true"}) as conn:
+                      db_kwargs={"uri": "sqlserver://dbuser:<password>@host:1433/?database=appdb&encrypt=true"}) as conn:
        ...
    ```
 4. If you pass `--license <path>`, **copies your licence** next to the library as

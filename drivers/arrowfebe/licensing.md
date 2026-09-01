@@ -68,8 +68,8 @@ import adbc_driver_manager.dbapi as dbapi
 
 conn = dbapi.connect(driver="arrowfebe", db_kwargs={
     "adbc.arrowfebe.server":    "localhost",
-    "adbc.arrowfebe.database":  "tpch",
-    "adbc.arrowfebe.username":  "alice",
+    "adbc.arrowfebe.database":  "appdb",
+    "adbc.arrowfebe.username":  "dbuser",
     "adbc.arrowfebe.password":  "<password>",
     "arpeio.adbc.license_file": "/etc/arpeio/arpeio_adbc.lic",
 }, autocommit=True)

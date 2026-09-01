@@ -36,7 +36,7 @@ import adbc_driver_manager.dbapi as dbapi
 
 with dbapi.connect(
     driver="arrowfebe",
-    db_kwargs={"uri": "postgresql://alice:<password>@localhost:5432/tpch?sslmode=require"},
+    db_kwargs={"uri": "postgresql://dbuser:<password>@localhost:5432/appdb?sslmode=require"},
     autocommit=True,
 ) as conn, conn.cursor() as cur:
     cur.execute("SELECT * FROM lineitem LIMIT 10")
@@ -65,7 +65,7 @@ int main() {
   CHECK(AdbcDatabaseSetOption(&database, "driver", "arrowfebe", &error));
   CHECK(AdbcDatabaseSetOption(
       &database, "uri",
-      "postgresql://alice:<password>@localhost:5432/tpch?sslmode=require", &error));
+      "postgresql://dbuser:<password>@localhost:5432/appdb?sslmode=require", &error));
   CHECK(AdbcDatabaseInit(&database, &error));
 
   AdbcConnection connection = {};
@@ -94,7 +94,7 @@ using Apache.Arrow.Adbc.DriverManager;
 
 var parameters = new Dictionary<string, string>
 {
-    ["uri"] = "postgresql://alice:<password>@localhost:5432/tpch?sslmode=require",
+    ["uri"] = "postgresql://dbuser:<password>@localhost:5432/appdb?sslmode=require",
 };
 
 // Load the driver by name from the installed ADBC manifest.
@@ -129,7 +129,7 @@ func main() {
 	// Load the driver by name from the installed ADBC manifest.
 	db, err := drv.NewDatabase(map[string]string{
 		"driver":          "arrowfebe",
-		adbc.OptionKeyURI: "postgresql://alice:<password>@localhost:5432/tpch?sslmode=require",
+		adbc.OptionKeyURI: "postgresql://dbuser:<password>@localhost:5432/appdb?sslmode=require",
 	})
 	if err != nil {
 		panic(err)
@@ -180,7 +180,7 @@ public class ConnectAndQuery {
     // Load the driver by name from the installed ADBC manifest.
     JniDriver.PARAM_DRIVER.set(parameters, "arrowfebe");
     AdbcDriver.PARAM_URI.set(parameters,
-        "postgresql://alice:<password>@localhost:5432/tpch?sslmode=require");
+        "postgresql://dbuser:<password>@localhost:5432/appdb?sslmode=require");
 
     try (BufferAllocator allocator = new RootAllocator();
         AdbcDatabase db = new JniDriver(allocator).open(parameters);
@@ -203,7 +203,7 @@ library(arrow)
 # Load the driver by name from the installed ADBC manifest.
 db <- adbc_database_init(
   adbc_driver("arrowfebe"),
-  uri = "postgresql://alice:<password>@localhost:5432/tpch?sslmode=require"
+  uri = "postgresql://dbuser:<password>@localhost:5432/appdb?sslmode=require"
 )
 con <- adbc_connection_init(db)
 
@@ -227,7 +227,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut database = driver.new_database_with_opts([(
         OptionDatabase::Uri,
         OptionValue::String(
-            "postgresql://alice:<password>@localhost:5432/tpch?sslmode=require".into(),
+            "postgresql://dbuser:<password>@localhost:5432/appdb?sslmode=require".into(),
         ),
     )])?;
     let mut connection = database.new_connection()?;
@@ -253,8 +253,8 @@ where the `uri` went — the rest of each program is identical to the recipe abo
 conn = dbapi.connect(driver="arrowfebe", db_kwargs={
     "adbc.arrowfebe.server":   "localhost",
     "adbc.arrowfebe.port":     "5432",
-    "adbc.arrowfebe.database": "tpch",
-    "adbc.arrowfebe.username": "alice",
+    "adbc.arrowfebe.database": "appdb",
+    "adbc.arrowfebe.username": "dbuser",
     "adbc.arrowfebe.password": "<password>",
     "adbc.arrowfebe.sslmode":  "require",
 }, autocommit=True)
@@ -265,8 +265,8 @@ CHECK(AdbcDatabaseNew(&database, &error));
 CHECK(AdbcDatabaseSetOption(&database, "driver", "arrowfebe", &error));
 CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowfebe.server", "localhost", &error));
 CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowfebe.port", "5432", &error));
-CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowfebe.database", "tpch", &error));
-CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowfebe.username", "alice", &error));
+CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowfebe.database", "appdb", &error));
+CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowfebe.username", "dbuser", &error));
 CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowfebe.password", "<password>", &error));
 CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowfebe.sslmode", "require", &error));
 CHECK(AdbcDatabaseInit(&database, &error));
@@ -277,8 +277,8 @@ var parameters = new Dictionary<string, string>
 {
     ["adbc.arrowfebe.server"]   = "localhost",
     ["adbc.arrowfebe.port"]     = "5432",
-    ["adbc.arrowfebe.database"] = "tpch",
-    ["adbc.arrowfebe.username"] = "alice",
+    ["adbc.arrowfebe.database"] = "appdb",
+    ["adbc.arrowfebe.username"] = "dbuser",
     ["adbc.arrowfebe.password"] = "<password>",
     ["adbc.arrowfebe.sslmode"]  = "require",
 };
@@ -291,8 +291,8 @@ db, err := drv.NewDatabase(map[string]string{
 	"driver":                  "arrowfebe",
 	"adbc.arrowfebe.server":   "localhost",
 	"adbc.arrowfebe.port":     "5432",
-	"adbc.arrowfebe.database": "tpch",
-	"adbc.arrowfebe.username": "alice",
+	"adbc.arrowfebe.database": "appdb",
+	"adbc.arrowfebe.username": "dbuser",
 	"adbc.arrowfebe.password": "<password>",
 	"adbc.arrowfebe.sslmode":  "require",
 })
@@ -303,8 +303,8 @@ Map<String, Object> parameters = new HashMap<>();
 JniDriver.PARAM_DRIVER.set(parameters, "arrowfebe");
 parameters.put("adbc.arrowfebe.server", "localhost");
 parameters.put("adbc.arrowfebe.port", "5432");
-parameters.put("adbc.arrowfebe.database", "tpch");
-parameters.put("adbc.arrowfebe.username", "alice");
+parameters.put("adbc.arrowfebe.database", "appdb");
+parameters.put("adbc.arrowfebe.username", "dbuser");
 parameters.put("adbc.arrowfebe.password", "<password>");
 parameters.put("adbc.arrowfebe.sslmode", "require");
 AdbcDatabase db = new JniDriver(allocator).open(parameters);
@@ -315,8 +315,8 @@ db <- adbc_database_init(
   adbc_driver("arrowfebe"),
   adbc.arrowfebe.server   = "localhost",
   adbc.arrowfebe.port     = "5432",
-  adbc.arrowfebe.database = "tpch",
-  adbc.arrowfebe.username = "alice",
+  adbc.arrowfebe.database = "appdb",
+  adbc.arrowfebe.username = "dbuser",
   adbc.arrowfebe.password = "<password>",
   adbc.arrowfebe.sslmode  = "require"
 )
@@ -326,8 +326,8 @@ db <- adbc_database_init(
 let mut database = driver.new_database_with_opts([
     (OptionDatabase::Other("adbc.arrowfebe.server".into()),   OptionValue::String("localhost".into())),
     (OptionDatabase::Other("adbc.arrowfebe.port".into()),     OptionValue::String("5432".into())),
-    (OptionDatabase::Other("adbc.arrowfebe.database".into()), OptionValue::String("tpch".into())),
-    (OptionDatabase::Other("adbc.arrowfebe.username".into()), OptionValue::String("alice".into())),
+    (OptionDatabase::Other("adbc.arrowfebe.database".into()), OptionValue::String("appdb".into())),
+    (OptionDatabase::Other("adbc.arrowfebe.username".into()), OptionValue::String("dbuser".into())),
     (OptionDatabase::Other("adbc.arrowfebe.password".into()), OptionValue::String("<password>".into())),
     (OptionDatabase::Other("adbc.arrowfebe.sslmode".into()),  OptionValue::String("require".into())),
 ])?;
@@ -341,7 +341,7 @@ Or the DB-API shortcut from the Python package:
 
 ```python
 import arrowfebe_adbc
-conn = arrowfebe_adbc.connect("localhost", "tpch", "alice", "<password>")
+conn = arrowfebe_adbc.connect("localhost", "appdb", "dbuser", "<password>")
 ```
 
 ## Straight to pandas / Polars / DuckDB
@@ -667,8 +667,8 @@ Verify the server certificate chain and hostname, and pin a custom root CA:
 ```python
 conn = dbapi.connect(driver="arrowfebe", db_kwargs={
     "adbc.arrowfebe.server":        "db.example.com",
-    "adbc.arrowfebe.database":      "mydb",
-    "adbc.arrowfebe.username":      "alice",
+    "adbc.arrowfebe.database":      "appdb",
+    "adbc.arrowfebe.username":      "dbuser",
     "adbc.arrowfebe.password":      "<password>",
     "adbc.arrowfebe.sslmode":       "verify-full",
     "adbc.arrowfebe.ssl_root_cert": "/etc/ssl/certs/pg-root.pem",
@@ -688,7 +688,7 @@ No username/password — POSIX Kerberos or Windows SSPI:
 ```python
 conn = dbapi.connect(driver="arrowfebe", db_kwargs={
     "adbc.arrowfebe.server":    "db.example.com",
-    "adbc.arrowfebe.database":  "mydb",
+    "adbc.arrowfebe.database":  "appdb",
     "adbc.arrowfebe.auth_type": "integrated",
     # optional explicit Kerberos credentials on Linux/macOS:
     # "adbc.arrowfebe.krb5.ccache": "/tmp/krb5cc_1000",

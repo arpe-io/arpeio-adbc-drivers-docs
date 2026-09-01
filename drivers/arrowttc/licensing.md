@@ -53,9 +53,9 @@ import adbc_driver_manager.dbapi as dbapi
 
 conn = dbapi.connect(driver="arrowttc", db_kwargs={
     "adbc.arrowttc.server":       "localhost",
-    "adbc.arrowttc.service_name": "orclpdb1",
-    "adbc.arrowttc.username":     "scott",
-    "adbc.arrowttc.password":     "tiger",
+    "adbc.arrowttc.service_name": "appdb",
+    "adbc.arrowttc.username":     "dbuser",
+    "adbc.arrowttc.password":     "<password>",
     "arpeio.adbc.license_file":   "/etc/arpeio/arpeio_adbc.lic",
 })
 ```
