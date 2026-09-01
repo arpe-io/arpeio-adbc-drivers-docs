@@ -47,7 +47,7 @@ Load the driver by name (`arrowtds`) from any ADBC client:
 ```python
 import adbc_driver_manager.dbapi as dbapi
 with dbapi.connect(driver="arrowtds",
-                   db_kwargs={"uri": "sqlserver://sa:<pw>@host:1433/?database=db&encrypt=true"}) as conn:
+                   db_kwargs={"uri": "sqlserver://dbuser:<password>@host:1433/?database=appdb&encrypt=true"}) as conn:
     cur = conn.cursor()
     cur.execute("SELECT * FROM dbo.orders")
     table = cur.fetch_arrow_table()
@@ -59,7 +59,7 @@ with dbapi.connect(driver="arrowtds",
 AdbcError e = {}; AdbcDatabase db = {}; AdbcConnection conn = {}; AdbcStatement st = {};
 AdbcDatabaseNew(&db, &e);
 AdbcDatabaseSetOption(&db, "driver", "arrowtds", &e);
-AdbcDatabaseSetOption(&db, "uri", "sqlserver://sa:<pw>@host:1433/?database=db&encrypt=true", &e);
+AdbcDatabaseSetOption(&db, "uri", "sqlserver://dbuser:<password>@host:1433/?database=appdb&encrypt=true", &e);
 AdbcDatabaseInit(&db, &e);
 AdbcConnectionNew(&conn, &e); AdbcConnectionInit(&conn, &db, &e);
 AdbcStatementNew(&conn, &st, &e);
@@ -74,7 +74,7 @@ using Apache.Arrow.Adbc.DriverManager;
 
 using var driver = AdbcDriverManager.FindLoadDriver("arrowtds", loadOptions: AdbcLoadFlags.Default);
 using var database = driver.Open(new Dictionary<string, string> {
-    ["uri"] = "sqlserver://sa:<pw>@host:1433/?database=db&encrypt=true" });
+    ["uri"] = "sqlserver://dbuser:<password>@host:1433/?database=appdb&encrypt=true" });
 using var connection = database.Connect(null);
 using var statement = connection.CreateStatement();
 statement.SqlQuery = "SELECT * FROM dbo.orders";
@@ -85,7 +85,7 @@ using var stream = statement.ExecuteQuery().Stream!;   // IArrowArrayStream
 var drv drivermgr.Driver
 db, _ := drv.NewDatabase(map[string]string{
 	"driver":          "arrowtds",
-	adbc.OptionKeyURI: "sqlserver://sa:<pw>@host:1433/?database=db&encrypt=true",
+	adbc.OptionKeyURI: "sqlserver://dbuser:<password>@host:1433/?database=appdb&encrypt=true",
 })
 conn, _ := db.Open(ctx)
 stmt, _ := conn.NewStatement()
@@ -97,7 +97,7 @@ defer reader.Release()
 ```java
 Map<String, Object> params = new HashMap<>();
 JniDriver.PARAM_DRIVER.set(params, "arrowtds");
-AdbcDriver.PARAM_URI.set(params, "sqlserver://sa:<pw>@host:1433/?database=db&encrypt=true");
+AdbcDriver.PARAM_URI.set(params, "sqlserver://dbuser:<password>@host:1433/?database=appdb&encrypt=true");
 try (BufferAllocator a = new RootAllocator();
      AdbcDatabase db = new JniDriver(a).open(params);
      AdbcConnection conn = db.connect();
@@ -112,7 +112,7 @@ try (BufferAllocator a = new RootAllocator();
 ```r
 library(adbcdrivermanager)
 db  <- adbc_database_init(adbc_driver("arrowtds"),
-                          uri = "sqlserver://sa:<pw>@host:1433/?database=db&encrypt=true")
+                          uri = "sqlserver://dbuser:<password>@host:1433/?database=appdb&encrypt=true")
 con <- adbc_connection_init(db)
 table <- read_adbc(con, "SELECT * FROM dbo.orders") |> arrow::as_arrow_table()
 ```
@@ -124,7 +124,7 @@ use adbc_driver_manager::ManagedDriver;
 
 let mut driver = ManagedDriver::load_from_name("arrowtds", None, AdbcVersion::default(), LOAD_FLAG_DEFAULT, None)?;
 let mut db = driver.new_database_with_opts([(OptionDatabase::Uri,
-    OptionValue::String("sqlserver://sa:<pw>@host:1433/?database=db&encrypt=true".into()))])?;
+    OptionValue::String("sqlserver://dbuser:<password>@host:1433/?database=appdb&encrypt=true".into()))])?;
 let mut conn = db.new_connection()?;
 let mut stmt = conn.new_statement()?;
 stmt.set_sql_query("SELECT * FROM dbo.orders")?;

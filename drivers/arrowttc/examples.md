@@ -38,7 +38,7 @@ import adbc_driver_manager.dbapi as dbapi
 
 with dbapi.connect(
     driver="arrowttc",
-    db_kwargs={"uri": "oracle://scott:tiger@localhost:1521/orclpdb1"},
+    db_kwargs={"uri": "oracle://dbuser:<password>@localhost:1521/appdb"},
 ) as conn, conn.cursor() as cur:
     cur.execute("SELECT * FROM lineitem WHERE ROWNUM <= 10")
     table = cur.fetch_arrow_table()     # pyarrow.Table
@@ -66,7 +66,7 @@ int main() {
   CHECK(AdbcDatabaseSetOption(&database, "driver", "arrowttc", &error));
   CHECK(AdbcDatabaseSetOption(
       &database, "uri",
-      "oracle://scott:tiger@localhost:1521/orclpdb1", &error));
+      "oracle://dbuser:<password>@localhost:1521/appdb", &error));
   CHECK(AdbcDatabaseInit(&database, &error));
 
   AdbcConnection connection = {};
@@ -95,7 +95,7 @@ using Apache.Arrow.Adbc.DriverManager;
 
 var parameters = new Dictionary<string, string>
 {
-    ["uri"] = "oracle://scott:tiger@localhost:1521/orclpdb1",
+    ["uri"] = "oracle://dbuser:<password>@localhost:1521/appdb",
 };
 
 // Load the driver by name from the installed ADBC manifest.
@@ -130,7 +130,7 @@ func main() {
 	// Load the driver by name from the installed ADBC manifest.
 	db, err := drv.NewDatabase(map[string]string{
 		"driver":          "arrowttc",
-		adbc.OptionKeyURI: "oracle://scott:tiger@localhost:1521/orclpdb1",
+		adbc.OptionKeyURI: "oracle://dbuser:<password>@localhost:1521/appdb",
 	})
 	if err != nil {
 		panic(err)
@@ -181,7 +181,7 @@ public class ConnectAndQuery {
     // Load the driver by name from the installed ADBC manifest.
     JniDriver.PARAM_DRIVER.set(parameters, "arrowttc");
     AdbcDriver.PARAM_URI.set(parameters,
-        "oracle://scott:tiger@localhost:1521/orclpdb1");
+        "oracle://dbuser:<password>@localhost:1521/appdb");
 
     try (BufferAllocator allocator = new RootAllocator();
         AdbcDatabase db = new JniDriver(allocator).open(parameters);
@@ -204,7 +204,7 @@ library(arrow)
 # Load the driver by name from the installed ADBC manifest.
 db <- adbc_database_init(
   adbc_driver("arrowttc"),
-  uri = "oracle://scott:tiger@localhost:1521/orclpdb1"
+  uri = "oracle://dbuser:<password>@localhost:1521/appdb"
 )
 con <- adbc_connection_init(db)
 
@@ -228,7 +228,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut database = driver.new_database_with_opts([(
         OptionDatabase::Uri,
         OptionValue::String(
-            "oracle://scott:tiger@localhost:1521/orclpdb1".into(),
+            "oracle://dbuser:<password>@localhost:1521/appdb".into(),
         ),
     )])?;
     let mut connection = database.new_connection()?;
@@ -254,9 +254,9 @@ where the `uri` went — the rest of each program is identical to the recipe abo
 conn = dbapi.connect(driver="arrowttc", db_kwargs={
     "adbc.arrowttc.server":       "localhost",
     "adbc.arrowttc.port":         "1521",
-    "adbc.arrowttc.service_name": "orclpdb1",
-    "adbc.arrowttc.username":     "scott",
-    "adbc.arrowttc.password":     "tiger",
+    "adbc.arrowttc.service_name": "appdb",
+    "adbc.arrowttc.username":     "dbuser",
+    "adbc.arrowttc.password":     "<password>",
 })
 ```
 
@@ -265,9 +265,9 @@ CHECK(AdbcDatabaseNew(&database, &error));
 CHECK(AdbcDatabaseSetOption(&database, "driver", "arrowttc", &error));
 CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowttc.server", "localhost", &error));
 CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowttc.port", "1521", &error));
-CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowttc.service_name", "orclpdb1", &error));
-CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowttc.username", "scott", &error));
-CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowttc.password", "tiger", &error));
+CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowttc.service_name", "appdb", &error));
+CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowttc.username", "dbuser", &error));
+CHECK(AdbcDatabaseSetOption(&database, "adbc.arrowttc.password", "<password>", &error));
 CHECK(AdbcDatabaseInit(&database, &error));
 ```
 
@@ -276,9 +276,9 @@ var parameters = new Dictionary<string, string>
 {
     ["adbc.arrowttc.server"]       = "localhost",
     ["adbc.arrowttc.port"]         = "1521",
-    ["adbc.arrowttc.service_name"] = "orclpdb1",
-    ["adbc.arrowttc.username"]     = "scott",
-    ["adbc.arrowttc.password"]     = "tiger",
+    ["adbc.arrowttc.service_name"] = "appdb",
+    ["adbc.arrowttc.username"]     = "dbuser",
+    ["adbc.arrowttc.password"]     = "<password>",
 };
 using AdbcDriver driver = AdbcDriverManager.FindLoadDriver("arrowttc", loadOptions: AdbcLoadFlags.Default);
 using AdbcDatabase database = driver.Open(parameters);
@@ -289,9 +289,9 @@ db, err := drv.NewDatabase(map[string]string{
 	"driver":                      "arrowttc",
 	"adbc.arrowttc.server":        "localhost",
 	"adbc.arrowttc.port":          "1521",
-	"adbc.arrowttc.service_name":  "orclpdb1",
-	"adbc.arrowttc.username":      "scott",
-	"adbc.arrowttc.password":      "tiger",
+	"adbc.arrowttc.service_name":  "appdb",
+	"adbc.arrowttc.username":      "dbuser",
+	"adbc.arrowttc.password":      "<password>",
 })
 ```
 
@@ -300,9 +300,9 @@ Map<String, Object> parameters = new HashMap<>();
 JniDriver.PARAM_DRIVER.set(parameters, "arrowttc");
 parameters.put("adbc.arrowttc.server", "localhost");
 parameters.put("adbc.arrowttc.port", "1521");
-parameters.put("adbc.arrowttc.service_name", "orclpdb1");
-parameters.put("adbc.arrowttc.username", "scott");
-parameters.put("adbc.arrowttc.password", "tiger");
+parameters.put("adbc.arrowttc.service_name", "appdb");
+parameters.put("adbc.arrowttc.username", "dbuser");
+parameters.put("adbc.arrowttc.password", "<password>");
 AdbcDatabase db = new JniDriver(allocator).open(parameters);
 ```
 
@@ -311,9 +311,9 @@ db <- adbc_database_init(
   adbc_driver("arrowttc"),
   adbc.arrowttc.server       = "localhost",
   adbc.arrowttc.port         = "1521",
-  adbc.arrowttc.service_name = "orclpdb1",
-  adbc.arrowttc.username     = "scott",
-  adbc.arrowttc.password     = "tiger"
+  adbc.arrowttc.service_name = "appdb",
+  adbc.arrowttc.username     = "dbuser",
+  adbc.arrowttc.password     = "<password>"
 )
 ```
 
@@ -321,9 +321,9 @@ db <- adbc_database_init(
 let mut database = driver.new_database_with_opts([
     (OptionDatabase::Other("adbc.arrowttc.server".into()),       OptionValue::String("localhost".into())),
     (OptionDatabase::Other("adbc.arrowttc.port".into()),         OptionValue::String("1521".into())),
-    (OptionDatabase::Other("adbc.arrowttc.service_name".into()), OptionValue::String("orclpdb1".into())),
-    (OptionDatabase::Other("adbc.arrowttc.username".into()),     OptionValue::String("scott".into())),
-    (OptionDatabase::Other("adbc.arrowttc.password".into()),     OptionValue::String("tiger".into())),
+    (OptionDatabase::Other("adbc.arrowttc.service_name".into()), OptionValue::String("appdb".into())),
+    (OptionDatabase::Other("adbc.arrowttc.username".into()),     OptionValue::String("dbuser".into())),
+    (OptionDatabase::Other("adbc.arrowttc.password".into()),     OptionValue::String("<password>".into())),
 ])?;
 ```
 
@@ -335,8 +335,8 @@ Or the DB-API shortcut from the Python package:
 
 ```python
 import arrowttc_adbc
-conn = arrowttc_adbc.connect(server="localhost", service_name="orclpdb1",
-                             username="scott", password="tiger")
+conn = arrowttc_adbc.connect(server="localhost", service_name="appdb",
+                             username="dbuser", password="<password>")
 ```
 
 ## Straight to pandas / Polars / DuckDB
@@ -658,9 +658,9 @@ Encrypt the whole session without TCPS — the way to connect a server configure
 ```python
 conn = dbapi.connect(driver="arrowttc", db_kwargs={
     "adbc.arrowttc.server":         "dbhost",
-    "adbc.arrowttc.service_name":   "orclpdb1",
-    "adbc.arrowttc.username":       "scott",
-    "adbc.arrowttc.password":       "tiger",
+    "adbc.arrowttc.service_name":   "appdb",
+    "adbc.arrowttc.username":       "dbuser",
+    "adbc.arrowttc.password":       "<password>",
     "adbc.arrowttc.encryption":     "required",   # AES-256 payloads
     "adbc.arrowttc.data_integrity": "required",   # SHA-256 checksum
 })
@@ -677,8 +677,8 @@ conn = dbapi.connect(driver="arrowttc", db_kwargs={
     "adbc.arrowttc.server":          "adb.<region>.oraclecloud.com",
     "adbc.arrowttc.port":            "1522",
     "adbc.arrowttc.service_name":    "<svc>_low.adb.oraclecloud.com",
-    "adbc.arrowttc.username":        "scott",
-    "adbc.arrowttc.password":        "tiger",
+    "adbc.arrowttc.username":        "dbuser",
+    "adbc.arrowttc.password":        "<password>",
     "adbc.arrowttc.ssl_mode":        "verify-full",
     "adbc.arrowttc.wallet_location": "/home/you/wallet",
     "adbc.arrowttc.wallet_password": "<wallet-pw>",
@@ -694,7 +694,7 @@ No Oracle password — a Kerberos ticket (Linux / MIT krb5 only):
 ```python
 conn = dbapi.connect(driver="arrowttc", db_kwargs={
     "adbc.arrowttc.server":       "db.corp.example.com",
-    "adbc.arrowttc.service_name": "orclpdb1",
+    "adbc.arrowttc.service_name": "appdb",
     "adbc.arrowttc.auth_method":  "kerberos",
     "adbc.arrowttc.krb5_spn":     "oracle/db.corp.example.com",
     # "adbc.arrowttc.krb5_cred_mode": "ccache",  # or keytab / password

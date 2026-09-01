@@ -47,7 +47,7 @@ Load the driver by name (`arrowfebe`) from any ADBC client:
 ```python
 import adbc_driver_manager.dbapi as dbapi
 with dbapi.connect(driver="arrowfebe",
-                   db_kwargs={"uri": "postgresql://user:<pw>@host:5432/mydb?sslmode=require"}) as conn:
+                   db_kwargs={"uri": "postgresql://dbuser:<password>@host:5432/appdb?sslmode=require"}) as conn:
     cur = conn.cursor()
     cur.execute("SELECT * FROM public.orders")
     table = cur.fetch_arrow_table()
@@ -59,7 +59,7 @@ with dbapi.connect(driver="arrowfebe",
 AdbcError e = {}; AdbcDatabase db = {}; AdbcConnection conn = {}; AdbcStatement st = {};
 AdbcDatabaseNew(&db, &e);
 AdbcDatabaseSetOption(&db, "driver", "arrowfebe", &e);
-AdbcDatabaseSetOption(&db, "uri", "postgresql://user:<pw>@host:5432/mydb?sslmode=require", &e);
+AdbcDatabaseSetOption(&db, "uri", "postgresql://dbuser:<password>@host:5432/appdb?sslmode=require", &e);
 AdbcDatabaseInit(&db, &e);
 AdbcConnectionNew(&conn, &e); AdbcConnectionInit(&conn, &db, &e);
 AdbcStatementNew(&conn, &st, &e);
@@ -74,7 +74,7 @@ using Apache.Arrow.Adbc.DriverManager;
 
 using var driver = AdbcDriverManager.FindLoadDriver("arrowfebe", loadOptions: AdbcLoadFlags.Default);
 using var database = driver.Open(new Dictionary<string, string> {
-    ["uri"] = "postgresql://user:<pw>@host:5432/mydb?sslmode=require" });
+    ["uri"] = "postgresql://dbuser:<password>@host:5432/appdb?sslmode=require" });
 using var connection = database.Connect(null);
 using var statement = connection.CreateStatement();
 statement.SqlQuery = "SELECT * FROM public.orders";
@@ -85,7 +85,7 @@ using var stream = statement.ExecuteQuery().Stream!;   // IArrowArrayStream
 var drv drivermgr.Driver
 db, _ := drv.NewDatabase(map[string]string{
 	"driver":          "arrowfebe",
-	adbc.OptionKeyURI: "postgresql://user:<pw>@host:5432/mydb?sslmode=require",
+	adbc.OptionKeyURI: "postgresql://dbuser:<password>@host:5432/appdb?sslmode=require",
 })
 conn, _ := db.Open(ctx)
 stmt, _ := conn.NewStatement()
@@ -97,7 +97,7 @@ defer reader.Release()
 ```java
 Map<String, Object> params = new HashMap<>();
 JniDriver.PARAM_DRIVER.set(params, "arrowfebe");
-AdbcDriver.PARAM_URI.set(params, "postgresql://user:<pw>@host:5432/mydb?sslmode=require");
+AdbcDriver.PARAM_URI.set(params, "postgresql://dbuser:<password>@host:5432/appdb?sslmode=require");
 try (BufferAllocator a = new RootAllocator();
      AdbcDatabase db = new JniDriver(a).open(params);
      AdbcConnection conn = db.connect();
@@ -112,7 +112,7 @@ try (BufferAllocator a = new RootAllocator();
 ```r
 library(adbcdrivermanager)
 db  <- adbc_database_init(adbc_driver("arrowfebe"),
-                          uri = "postgresql://user:<pw>@host:5432/mydb?sslmode=require")
+                          uri = "postgresql://dbuser:<password>@host:5432/appdb?sslmode=require")
 con <- adbc_connection_init(db)
 table <- read_adbc(con, "SELECT * FROM public.orders") |> arrow::as_arrow_table()
 ```
@@ -124,7 +124,7 @@ use adbc_driver_manager::ManagedDriver;
 
 let mut driver = ManagedDriver::load_from_name("arrowfebe", None, AdbcVersion::default(), LOAD_FLAG_DEFAULT, None)?;
 let mut db = driver.new_database_with_opts([(OptionDatabase::Uri,
-    OptionValue::String("postgresql://user:<pw>@host:5432/mydb?sslmode=require".into()))])?;
+    OptionValue::String("postgresql://dbuser:<password>@host:5432/appdb?sslmode=require".into()))])?;
 let mut conn = db.new_connection()?;
 let mut stmt = conn.new_statement()?;
 stmt.set_sql_query("SELECT * FROM public.orders")?;

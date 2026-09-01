@@ -41,8 +41,8 @@ import adbc_driver_manager.dbapi as dbapi
 # Discrete options
 conn = dbapi.connect(driver="arrowtds", db_kwargs={
     "adbc.arrowtds.server":            "localhost",
-    "adbc.arrowtds.database":          "tpch",
-    "adbc.arrowtds.username":          "sa",
+    "adbc.arrowtds.database":          "appdb",
+    "adbc.arrowtds.username":          "dbuser",
     "adbc.arrowtds.password":          "<password>",
     "adbc.arrowtds.encrypt":           "true",
     "adbc.arrowtds.trust_server_cert": "true",
@@ -51,14 +51,14 @@ conn = dbapi.connect(driver="arrowtds", db_kwargs={
 # Connection string
 conn = dbapi.connect(driver="arrowtds", db_kwargs={
     "adbc.arrowtds.connection_string":
-        "Server=localhost;Database=tpch;User ID=sa;Password=<password>;"
+        "Server=localhost;Database=appdb;User ID=dbuser;Password=<password>;"
         "Encrypt=true;TrustServerCertificate=true",
 })
 
 # Connection URI
 conn = dbapi.connect(driver="arrowtds", db_kwargs={
-    "uri": "sqlserver://sa:<password>@localhost:1433/"
-           "?database=tpch&encrypt=true&TrustServerCertificate=true",
+    "uri": "sqlserver://dbuser:<password>@localhost:1433/"
+           "?database=appdb&encrypt=true&TrustServerCertificate=true",
 })
 ```
 
@@ -218,7 +218,7 @@ onto the options above.
 | `Authentication` | auth mode (`SqlPassword`, `ActiveDirectory*` …) |
 
 ```
-Server=localhost\SQL2022;Database=tpch;User ID=sa;Password=secret;Encrypt=true;Packet Size=8192
+Server=localhost\SQL2022;Database=appdb;User ID=dbuser;Password=<password>;Encrypt=true;Packet Size=8192
 ```
 
 ---
@@ -246,7 +246,7 @@ copied from other SQL Server ADBC tooling works unchanged.
   grammar.
 - `userinfo` and query values are **percent-decoded**; query values treat `+` as
   a space (`connection+timeout` ≡ `connection timeout`). IPv6 hosts use the
-  bracketed form: `sqlserver://[::1]:1433/?database=d`.
+  bracketed form: `sqlserver://[::1]:1433/?database=appdb`.
 
 **Query parameters** (unknown or repeated parameters are rejected):
 
@@ -331,7 +331,7 @@ token = subprocess.check_output(
 
 conn = dbapi.connect(driver="arrowtds", db_kwargs={
     "adbc.arrowtds.server":       "myserver.database.windows.net",
-    "adbc.arrowtds.database":     "mydb",
+    "adbc.arrowtds.database":     "appdb",
     "adbc.arrowtds.encrypt":      "true",
     "adbc.arrowtds.access_token": token,
 })
@@ -346,7 +346,7 @@ The driver acquires the token itself; omit `access_token`:
 ```python
 db_kwargs={
     "adbc.arrowtds.server":        "myserver.database.windows.net",
-    "adbc.arrowtds.database":      "mydb",
+    "adbc.arrowtds.database":      "appdb",
     "adbc.arrowtds.encrypt":       "true",
     "adbc.arrowtds.tenant_id":     "<tenant-guid-or-domain>",
     "adbc.arrowtds.client_id":     "<app-client-id>",
@@ -368,7 +368,7 @@ no secret is needed:
 ```python
 db_kwargs={
     "adbc.arrowtds.server":           "myserver.database.windows.net",
-    "adbc.arrowtds.database":         "mydb",
+    "adbc.arrowtds.database":         "appdb",
     "adbc.arrowtds.encrypt":          "true",
     "adbc.arrowtds.managed_identity": "true",   # or a user-assigned client id
 }
@@ -386,7 +386,7 @@ Handy for code that runs unchanged on a dev machine, in CI, and on an Azure host
 ```python
 db_kwargs={
     "adbc.arrowtds.server":    "myserver.database.windows.net",
-    "adbc.arrowtds.database":  "mydb",
+    "adbc.arrowtds.database":  "appdb",
     "adbc.arrowtds.encrypt":   "true",
     "adbc.arrowtds.auth_type": "ActiveDirectoryDefault",
 }

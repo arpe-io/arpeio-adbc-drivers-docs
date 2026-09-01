@@ -43,20 +43,20 @@ import adbc_driver_manager.dbapi as dbapi
 conn = dbapi.connect(driver="arrowttc", db_kwargs={
     "adbc.arrowttc.server":       "localhost",
     "adbc.arrowttc.port":         "1521",
-    "adbc.arrowttc.service_name": "orclpdb1",
-    "adbc.arrowttc.username":     "scott",
-    "adbc.arrowttc.password":     "tiger",
+    "adbc.arrowttc.service_name": "appdb",
+    "adbc.arrowttc.username":     "dbuser",
+    "adbc.arrowttc.password":     "<password>",
 })
 
 # Connection string (ADO.NET keywords, or Oracle EZConnect in Server)
 conn = dbapi.connect(driver="arrowttc", db_kwargs={
     "adbc.arrowttc.connection_string":
-        "Server=localhost:1521/orclpdb1;User ID=scott;Password=tiger",
+        "Server=localhost:1521/appdb;User ID=dbuser;Password=<password>",
 })
 
 # Connection URI (Oracle URL grammar)
 conn = dbapi.connect(driver="arrowttc", db_kwargs={
-    "uri": "oracle://scott:tiger@localhost:1521/orclpdb1?ssl_mode=verify-full",
+    "uri": "oracle://dbuser:<password>@localhost:1521/appdb?ssl_mode=verify-full",
 })
 ```
 
@@ -216,7 +216,7 @@ keyword additionally accepts an Oracle **EZConnect** descriptor (see below).
 | `Kerberos Cred Mode`, `Kerberos Keytab`, `Kerberos Cache`, `Kerberos SPN`, `Kerberos Realm`, `Kerberos Principal`, `Kerberos Password` | the matching `krb5_*` option |
 
 ```
-Server=localhost:1521/orclpdb1;User ID=scott;Password=tiger;sslmode=verify-full
+Server=localhost:1521/appdb;User ID=dbuser;Password=<password>;sslmode=verify-full
 ```
 
 `Database` / `Initial Catalog` map to the **service name** — Oracle's unit of
@@ -266,8 +266,8 @@ other Oracle ADBC tooling works unchanged.
 | `proxy_user` | `proxy_user` |
 
 ```
-oracle://scott:tiger@dbhost:2484/orclpdb1?ssl_mode=verify-full&wallet_location=/etc/oracle/wallet
-oracle://scott:tiger@dbhost:1521/?sid=ORCL
+oracle://dbuser:<password>@dbhost:2484/appdb?ssl_mode=verify-full&wallet_location=/etc/oracle/wallet
+oracle://dbuser:<password>@dbhost:1521/?sid=ORCL
 ```
 
 ---
@@ -280,8 +280,8 @@ is what most users reach for. ArrowTTC accepts it wherever a `Server` is given
 
 ```
 Server=dbhost                       # host only, service/SID given separately
-Server=dbhost:1521/orclpdb1         # host:port/service
-Server=//dbhost:1521/orclpdb1       # optional leading //
+Server=dbhost:1521/appdb         # host:port/service
+Server=//dbhost:1521/appdb       # optional leading //
 Server=dbhost,1521                  # ADO.NET host,port form (cross-driver muscle memory)
 ```
 
@@ -308,8 +308,8 @@ db_kwargs = {
     "adbc.arrowttc.server":          "adb.<region>.oraclecloud.com",
     "adbc.arrowttc.port":            "1522",
     "adbc.arrowttc.service_name":    "<svc>_low.adb.oraclecloud.com",
-    "adbc.arrowttc.username":        "scott",
-    "adbc.arrowttc.password":        "tiger",
+    "adbc.arrowttc.username":        "dbuser",
+    "adbc.arrowttc.password":        "<password>",
     "adbc.arrowttc.ssl_mode":        "verify-full",
     "adbc.arrowttc.wallet_location": "/home/you/wallet",
     "adbc.arrowttc.wallet_password": "<wallet-pw>",

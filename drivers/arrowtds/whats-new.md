@@ -61,7 +61,7 @@ A security- and robustness-hardening pass over the wire-parsing, authentication,
 and bulk-ingest paths:
 
 - **Secrets are scrubbed from memory** — Entra bearer/access tokens and a
-  `sqlserver://user:secret@host` URI password are now zeroed before their buffers
+  `sqlserver://dbuser:<password>@host` URI password are now zeroed before their buffers
   are freed, closing gaps where they could linger in freed memory.
 - **A multi-statement query no longer returns a half-read session to the pool** —
   `SELECT a; SELECT b` (or an `EXEC` yielding several result sets) used to leave
